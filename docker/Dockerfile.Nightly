@@ -13,11 +13,11 @@ RUN mkdir /content && chown -R user:user /content
 WORKDIR /content
 USER user
 
-RUN pip3 install --upgrade pip
-RUN pip install --pre xformers
-RUN pip install --pre triton
-RUN pip install numexpr
-
+RUN pip3 install --no-cache-dir --upgrade pip
+RUN pip install --no-cache-dir --pre xformers
+RUN pip install --no-cache-dir --pre triton
+RUN pip install --no-cache-dir numexpr
+RUN rm -rf /home/user/.cache/pip
 
 RUN git clone -b v2.1 https://github.com/camenduru/stable-diffusion-webui
 ADD --chown=user https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-scripts/main/run_n_times.py /content/stable-diffusion-webui/scripts/run_n_times.py
