@@ -8,6 +8,9 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update -y && apt-get upgrade -y && apt-get install -y libgl1 libglib2.0-0 wget git git-lfs python3-pip python-is-python3 libcairo2-dev pkg-config python3-dev && rm -rf /var/lib/apt/lists/*
 
+COPY entrypoint.sh /
+RUN chmod +x /entrypoint.sh
+
 RUN adduser --disabled-password --gecos '' user
 RUN mkdir /content && chown -R user:user /content
 WORKDIR /content
@@ -20,7 +23,7 @@ RUN pip install numexpr
 RUN pip install --upgrade fastapi==0.90.1
 RUN rm -rf /home/user/.cache/pip
 
-RUN git clone -b v2.3 https://github.com/camenduru/stable-diffusion-webui
+RUN git clone -b v2.2 https://github.com/camenduru/stable-diffusion-webui
 ADD --chown=user https://raw.githubusercontent.com/camenduru/stable-diffusion-webui-scripts/main/run_n_times.py /content/stable-diffusion-webui/scripts/run_n_times.py
 RUN git clone https://github.com/deforum-art/deforum-for-automatic1111-webui /content/stable-diffusion-webui/extensions/deforum-for-automatic1111-webui
 RUN git clone https://github.com/AlUlkesh/stable-diffusion-webui-images-browser /content/stable-diffusion-webui/extensions/stable-diffusion-webui-images-browser
@@ -61,12 +64,15 @@ RUN cd stable-diffusion-webui && git reset --hard
 # ADD --chown=user https://huggingface.co/ckpt/ControlNet/resolve/main/t2iadapter_canny_sd14v1.pth /content/stable-diffusion-webui/extensions/sd-webui-controlnet/models/t2iadapter_canny_sd14v1.pth
 
 RUN sed -i -e '''/    prepare_environment()/a\    os.system\(f\"""sed -i -e ''\"s/dict()))/dict())).cuda()/g\"'' /content/stable-diffusion-webui/repositories/stable-diffusion-stability-ai/ldm/util.py""")''' /content/stable-diffusion-webui/launch.py
-RUN sed -i -e 's/fastapi==0.90.1/fastapi==0.89.1/g' /content/stable-diffusion-webui/requirements_versions.txt
+# RUN sed -i -e 's/fastapi==0.90.1/fastapi==0.89.1/g' /content/stable-diffusion-webui/requirements_versions.txt
 RUN sed -i -e 's/    start()/    #start()/g' /content/stable-diffusion-webui/launch.py
 RUN cd stable-diffusion-webui && python launch.py --skip-torch-cuda-test
 
-# ADD --chown=user https://huggingface.co/ckpt/sd15/resolve/main/v1-5-pruned-emaonly.ckpt /content/stable-diffusion-webui/models/Stable-diffusion/v1-5-pruned-emaonly.ckpt
 
+# ADD --chown=user https://huggingface.co/ckpt/sd15/resolve/main/v1-5-pruned-emaonly.ckpt /content/stable-diffusion-webui/models/Stable-diffusion/v1-5-pruned-emaonly.ckpt
 EXPOSE 7860
 
-CMD cd /content/stable-diffusion-webui && python webui.py --xformers --listen --enable-insecure-extension-access --gradio-queue
+# CMD cd /content/stable-diffusion-webui && python webui.py --xformers --listen --enable-insecure-extension-access --gradio-queue
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["--xformers", "--listen", "--enable-insecure-extension-access", "--gradio-queue"]
+#### P/S: Additional command line args for docker run:: https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Command-Line-Arguments-and-Settings
