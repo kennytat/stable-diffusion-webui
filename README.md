@@ -165,6 +165,10 @@ The documentation was moved from this README over to the project's [wiki](https:
 - sd-webui-tunnels - https://github.com/camenduru/sd-webui-tunnels
 - batchlinks-webui - https://github.com/etherealxx/batchlinks-webui
 - sd_dreambooth_extension - https://github.com/d8ahazard/sd_dreambooth_extension
+- sd-webui-roop - https://github.com/s0md3v/sd-webui-roop
+
+Automatic1111 Extension list
+https://raw.githubusercontent.com/AUTOMATIC1111/stable-diffusion-webui-extensions/master/index.json
 
 ## Credits
 
