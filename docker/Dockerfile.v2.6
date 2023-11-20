@@ -9,13 +9,19 @@ RUN adduser --disabled-password --gecos '' user
 RUN mkdir /content && chown -R user:user /content
 WORKDIR /content
 USER user
-ENV PATH="/home/user/.local/bin:${PATH}"
-
+ENV PATH="/home/user/.local/bin:/home/user/miniconda3/bin:${PATH}"
 RUN wget https://github.com/camenduru/gperftools/releases/download/v1.0/libtcmalloc_minimal.so.4 -O /content/libtcmalloc_minimal.so.4
 ENV LD_PRELOAD=/content/libtcmalloc_minimal.so.4
 ENV LD_PRELOAD=/usr/local/cuda/lib64/libcudart.so.11.8.89
 ENV LD_LIBRARY_PATH="/usr/local/cuda/lib64:/usr/lib/x86_64-linux-gnu/:$LD_LIBRARY_PATH"
 
+RUN wget \
+	https://repo.anaconda.com/miniconda/Miniconda3-py310_23.5.2-0-Linux-x86_64.sh \
+	&& mkdir ~/.conda \
+	&& bash Miniconda3-py310_23.5.2-0-Linux-x86_64.sh -b \
+	&& rm -f Miniconda3-py310_23.5.2-0-Linux-x86_64.sh
+
+RUN conda install -y libcusparse=11.7.3.50 -c nvidia
 RUN pip3 install --upgrade pip
 RUN pip install xformers==0.0.20
 RUN pip install triton==2.0.0
@@ -48,6 +54,7 @@ RUN git clone https://github.com/aigc-apps/sd-webui-EasyPhoto /content/stable-di
 RUN git clone https://github.com/Bing-su/adetailer /content/stable-diffusion-webui/extensions/adetailer
 RUN git clone https://github.com/pharmapsychotic/clip-interrogator-ext /content/stable-diffusion-webui/extensions/clip-interrogator-ext
 RUN git clone https://github.com/continue-revolution/sd-webui-animatediff /content/stable-diffusion-webui/extensions/sd-webui-animatediff
+RUN git clone https://github.com/OpenTalker/SadTalker /content/stable-diffusion-webui/extensions/SadTalker
 RUN cd stable-diffusion-webui && git reset --hard
 
 ## Temporary include any neccessary file
