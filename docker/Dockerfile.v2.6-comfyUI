@@ -55,12 +55,15 @@ RUN git clone https://github.com/Bing-su/adetailer /content/stable-diffusion-web
 RUN git clone https://github.com/pharmapsychotic/clip-interrogator-ext /content/stable-diffusion-webui/extensions/clip-interrogator-ext
 RUN git clone https://github.com/continue-revolution/sd-webui-animatediff /content/stable-diffusion-webui/extensions/sd-webui-animatediff
 RUN git clone https://github.com/OpenTalker/SadTalker /content/stable-diffusion-webui/extensions/SadTalker
+RUN git clone https://github.com/AbdullahAlfaraj/Auto-Photoshop-StableDiffusion-Plugin /content/stable-diffusion-webui/extensions/Auto-Photoshop-StableDiffusion-Plugin
 ## Clone comfyUI extension
 RUN git clone https://github.com/comfyanonymous/ComfyUI
 RUN git clone https://github.com/Fannovel16/comfyui_controlnet_aux ComfyUI/custom_nodes/comfyui_controlnet_aux
 RUN git clone https://github.com/cubiq/ComfyUI_IPAdapter_plus ComfyUI/custom_nodes/ComfyUI_IPAdapter_plus
 RUN git clone https://github.com/Acly/comfyui-tooling-nodes ComfyUI/custom_nodes/comfyui-tooling-nodes
 RUN git clone https://github.com/ssitu/ComfyUI_UltimateSDUpscale --recursive ComfyUI/custom_nodes/ComfyUI_UltimateSDUpscale
+RUN git clone https://github.com/ltdrdata/ComfyUI-Manager ComfyUI/custom_nodes/ComfyUI-Manager
+RUN git clone https://github.com/AbdullahAlfaraj/Comfy-Photoshop-SD ComfyUI/custom_nodes/Comfy-Photoshop-SD
 
 RUN cd stable-diffusion-webui && git reset --hard
 
